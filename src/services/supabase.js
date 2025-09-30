@@ -3,21 +3,47 @@ import {createClient} from "@supabase/supabase-js";
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
-// single client export
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// Validate env vars early to provide clearer errors when missing
+if (!supabaseUrl || !supabaseKey) {
+    console.error(
+        "[supabase] Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY. Set env vars in your .env and restart dev server."
+    );
+}
+
+// Create a single client per browser context and disable realtime
+const _global = typeof window !== "undefined" ? window : globalThis;
+if (!_global.__supabase) {
+    _global.__supabase = createClient(supabaseUrl, supabaseKey, {
+        realtime: {enabled: false},
+    });
+    console.log("Supabase client initialized:", !!_global.__supabase); // Debug: should log true
+}
+export const supabase = _global.__supabase;
 
 // Fetch all articles
 export async function getArticles() {
-    const {data, error} = await supabase.from("articles").select("*").order("created_at", {ascending: false});
-    if (error) throw error;
-    return data;
+    try {
+        if (!supabaseUrl || !supabaseKey) throw new Error("Supabase env vars are not configured.");
+        const {data, error} = await supabase.from("articles").select("*").order("created_at", {ascending: false});
+        if (error) throw error;
+        return data;
+    } catch (err) {
+        console.error("[getArticles] Error fetching articles:", err);
+        throw err;
+    }
 }
 
 // Fetch single article by slug
 export async function getArticleBySlug(slug) {
-    const {data, error} = await supabase.from("articles").select("*").eq("slug", slug).single();
-    if (error) throw error;
-    return data;
+    try {
+        if (!supabaseUrl || !supabaseKey) throw new Error("Supabase env vars are not configured.");
+        const {data, error} = await supabase.from("articles").select("*").eq("slug", slug).single();
+        if (error) throw error;
+        return data;
+    } catch (err) {
+        console.error(`[getArticleBySlug] Error fetching article (${slug}):`, err);
+        throw err;
+    }
 }
 
 // Add article (admin)
@@ -29,7 +55,8 @@ export async function addArticle(article) {
 
 // Update article (admin)
 export async function updateArticle(id, article) {
-    const {data, error} = await supabase.from("articles").update(article).eq("id", id);
+    const payload = {...article, updated_at: new Date().toISOString()};
+    const {data, error} = await supabase.from("articles").update(payload).eq("id", id);
     if (error) throw error;
     return data;
 }
@@ -80,7 +107,6 @@ export async function updateRequestStatus(id, status) {
 
 // Convenience wrappers for Admin UI
 export async function approveRequest(id) {
-    // accepts id (not whole request object)
     return updateRequestStatus(id, "approved");
 }
 
@@ -109,5 +135,4 @@ export async function submitContact(contact) {
     return data;
 }
 
-// default export for compatibility
 export default supabase;

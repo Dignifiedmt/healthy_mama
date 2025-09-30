@@ -66,12 +66,12 @@ const EDDCalculatorModal = ({onClose}) => {
             {/* Floating calendar button */}
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 right-20 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-50"
+                className="fixed bottom-6 right-20 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-[--primary]/90 z-50"
                 aria-label="Open EDD Calculator"
             >
                 <Calendar size={24} />
             </button>
-            {/* Bottom-right panel (mirrors ChatbotModal behavior) */}
+
             {isOpen && (
                 <div className="fixed bottom-24 right-6 w-96 max-h-[80vh] bg-white shadow-xl rounded-lg flex flex-col z-50 border border-gray-200 overflow-auto">
                     <div className="flex justify-between items-center p-4 border-b bg-gray-50 rounded-t-lg">

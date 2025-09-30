@@ -3,15 +3,14 @@ import {getArticles, submitRequest, uploadImage} from "../services/supabase";
 import ArticleCard from "../components/ArticleCard";
 import SearchBar from "../components/SearchBar";
 import {Target, Eye, Heart} from "lucide-react";
-import SimpleMDE from "react-simplemde-editor"; // Updated import
-import "easymde/dist/easymde.min.css"; // Added for editor styles
+import SimpleMDE from "react-simplemde-editor";
+import "easymde/dist/easymde.min.css";
 
 const Home = () => {
     const [articles, setArticles] = useState([]);
     const [search, setSearch] = useState("");
     const [form, setForm] = useState({title: "", excerpt: "", content: "", image: null, email: ""});
     const [currentTipIndex, setCurrentTipIndex] = useState(0);
-    // Toggle visibility for the Add Article form
     const [showForm, setShowForm] = useState(false);
 
     const tips = [
@@ -29,8 +28,14 @@ const Home = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const data = await getArticles();
-            setArticles(data.slice(0, 3));
+            try {
+                const data = await getArticles();
+                setArticles(data.slice(0, 3) || []);
+            } catch (err) {
+                console.error("Failed to fetch articles:", err);
+                alert("Error loading articles. Please try again.");
+                setArticles([]);
+            }
         }
         fetchData();
 
@@ -48,20 +53,25 @@ const Home = () => {
 
     const handleSubmitRequest = async (e) => {
         e.preventDefault();
-        let imagePath = "";
-        if (form.image) {
-            imagePath = await uploadImage(form.image);
+        try {
+            let imagePath = "";
+            if (form.image) {
+                imagePath = await uploadImage(form.image);
+            }
+            await submitRequest({
+                title: form.title,
+                excerpt: form.excerpt,
+                content: form.content,
+                image_path: imagePath,
+                status: "pending",
+                submitter_email: form.email,
+            });
+            alert("Request submitted! Awaiting admin approval.");
+            setForm({title: "", excerpt: "", content: "", image: null, email: ""});
+        } catch (err) {
+            console.error("Failed to submit request:", err);
+            alert("Error submitting request. Please try again.");
         }
-        await submitRequest({
-            title: form.title,
-            excerpt: form.excerpt,
-            content: form.content,
-            image_path: imagePath,
-            status: "pending",
-            submitter_email: form.email,
-        });
-        alert("Request submitted! Awaiting admin approval.");
-        setForm({title: "", excerpt: "", content: "", image: null, email: ""});
     };
 
     const filteredArticles = articles.filter((a) => a.title.toLowerCase().includes(search.toLowerCase()));
@@ -106,9 +116,11 @@ const Home = () => {
             <section className="my-8">
                 <h2 className="text-3xl font-bold mb-4">Sabbin Rubuce-rubuce</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {filteredArticles.map((article) => (
-                        <ArticleCard key={article.id} article={article} />
-                    ))}
+                    {filteredArticles.length > 0 ? (
+                        filteredArticles.map((article) => <ArticleCard key={article.id} article={article} />)
+                    ) : (
+                        <p className="text-center">No recent articles available.</p>
+                    )}
                 </div>
             </section>
             <section className="my-8 flex items-center justify-between">

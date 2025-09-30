@@ -29,8 +29,11 @@ const ChatbotModal = () => {
         }
     };
 
-    const handleKeyPress = (e) => {
-        if (e.key === "Enter") handleSend();
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            handleSend();
+        }
     };
 
     return (
@@ -75,7 +78,7 @@ const ChatbotModal = () => {
                             type="text"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
-                            onKeyPress={handleKeyPress}
+                            onKeyDown={handleKeyDown}
                             placeholder="Rubuta tambayarka a Hausa..."
                             className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />

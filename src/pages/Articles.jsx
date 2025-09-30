@@ -4,7 +4,6 @@ import ArticleCard from "../components/ArticleCard";
 import SearchBar from "../components/SearchBar";
 import {useAuth} from "../contexts/AuthContext";
 
-// Articles list page with search and admin actions.
 const Articles = () => {
     const [articles, setArticles] = useState([]);
     const [search, setSearch] = useState("");
@@ -12,16 +11,27 @@ const Articles = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const data = await getArticles();
-            setArticles(data || []);
+            try {
+                const data = await getArticles();
+                setArticles(data || []);
+            } catch (err) {
+                console.error("Failed to fetch articles:", err);
+                alert("Error loading articles. Please try again.");
+                setArticles([]);
+            }
         }
         fetchData();
     }, []);
 
     const handleDelete = async (id) => {
         if (window.confirm("Delete?")) {
-            await deleteArticle(id);
-            setArticles((prev = []) => prev.filter((a) => a.id !== id));
+            try {
+                await deleteArticle(id);
+                setArticles((prev = []) => prev.filter((a) => a.id !== id));
+            } catch (err) {
+                console.error("Failed to delete article:", err);
+                alert("Error deleting article.");
+            }
         }
     };
 
@@ -34,14 +44,18 @@ const Articles = () => {
             <h1 className="text-3xl font-bold mb-4">Labarai</h1>
             <SearchBar value={search} onChange={(e) => setSearch(e.target.value)} />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-                {filteredArticles.map((article) => (
-                    <ArticleCard
-                        key={article.id}
-                        article={article}
-                        onEdit={isAdmin ? () => alert("Edit form TODO") : undefined} // Placeholder for edit modal
-                        onDelete={isAdmin ? () => handleDelete(article.id) : undefined}
-                    />
-                ))}
+                {filteredArticles.length > 0 ? (
+                    filteredArticles.map((article) => (
+                        <ArticleCard
+                            key={article.id}
+                            article={article}
+                            onEdit={isAdmin ? () => alert("Edit form TODO") : undefined}
+                            onDelete={isAdmin ? () => handleDelete(article.id) : undefined}
+                        />
+                    ))
+                ) : (
+                    <p className="text-center">No articles found. Try a different search or check back later.</p>
+                )}
             </div>
         </div>
     );

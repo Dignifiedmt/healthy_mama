@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
-import {getRequests, approveRequest, deleteRequest} from "../services/supabase";
+import {getRequests, approveRequest, deleteRequest, addArticle, uploadImage} from "../services/supabase";
 import SimpleMDE from "react-simplemde-editor";
-import "easymde/dist/easymde.min.css"; // Added for editor styles
+import "easymde/dist/easymde.min.css";
 
 const AdminDashboard = () => {
     const [requests, setRequests] = useState([]);
@@ -10,26 +10,62 @@ const AdminDashboard = () => {
 
     useEffect(() => {
         async function fetchRequests() {
-            const data = await getRequests();
-            setRequests(data);
+            try {
+                const data = await getRequests();
+                setRequests(data || []);
+            } catch (err) {
+                console.error("Failed to fetch requests:", err);
+                alert("Error loading requests. Please try again.");
+                setRequests([]);
+            }
         }
         fetchRequests();
     }, []);
 
     const handleApprove = async (request) => {
-        await approveRequest(request.id);
-        setRequests(requests.filter((r) => r.id !== request.id));
+        try {
+            await approveRequest(request.id);
+            setRequests(requests.filter((r) => r.id !== request.id));
+            alert("Request approved!");
+        } catch (err) {
+            console.error("Failed to approve request:", err);
+            alert("Error approving request.");
+        }
     };
 
     const handleDelete = async (id) => {
-        await deleteRequest(id);
-        setRequests(requests.filter((r) => r.id !== id));
+        try {
+            await deleteRequest(id);
+            setRequests(requests.filter((r) => r.id !== id));
+            alert("Request deleted!");
+        } catch (err) {
+            console.error("Failed to delete request:", err);
+            alert("Error deleting request.");
+        }
     };
 
     const handleAddArticle = async (e) => {
         e.preventDefault();
-        alert("Article added!");
-        setForm({title: "", excerpt: "", content: "", image: null});
+        try {
+            let imagePath = "";
+            if (form.image) {
+                imagePath = await uploadImage(form.image);
+            }
+            await addArticle({
+                title: form.title,
+                slug: form.title.toLowerCase().replace(/\s+/g, "-"),
+                excerpt: form.excerpt,
+                content: form.content,
+                image_path: imagePath,
+                author: "Admin", // Replace with actual admin user if available
+            });
+            alert("Article added!");
+            setForm({title: "", excerpt: "", content: "", image: null});
+            setShowAddForm(false);
+        } catch (err) {
+            console.error("Failed to add article:", err);
+            alert("Error adding article. Please try again.");
+        }
     };
 
     return (
@@ -123,24 +159,28 @@ const AdminDashboard = () => {
             <section>
                 <h2 className="text-2xl font-bold mb-4">Pending Requests</h2>
                 <div className="grid gap-4">
-                    {requests.map((request) => (
-                        <div key={request.id} className="bg-white p-4 rounded shadow-md">
-                            <h3 className="text-xl font-semibold">{request.title}</h3>
-                            <p>{request.excerpt}</p>
-                            <button
-                                onClick={() => handleApprove(request)}
-                                className="bg-green-600 text-white px-4 py-2 rounded mr-2"
-                            >
-                                Approve
-                            </button>
-                            <button
-                                onClick={() => handleDelete(request.id)}
-                                className="bg-red-600 text-white px-4 py-2 rounded"
-                            >
-                                Delete
-                            </button>
-                        </div>
-                    ))}
+                    {requests.length > 0 ? (
+                        requests.map((request) => (
+                            <div key={request.id} className="bg-white p-4 rounded shadow-md">
+                                <h3 className="text-xl font-semibold">{request.title}</h3>
+                                <p>{request.excerpt || "No excerpt available"}</p>
+                                <button
+                                    onClick={() => handleApprove(request)}
+                                    className="bg-green-600 text-white px-4 py-2 rounded mr-2"
+                                >
+                                    Approve
+                                </button>
+                                <button
+                                    onClick={() => handleDelete(request.id)}
+                                    className="bg-red-600 text-white px-4 py-2 rounded"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="text-center">No pending requests.</p>
+                    )}
                 </div>
             </section>
         </div>
