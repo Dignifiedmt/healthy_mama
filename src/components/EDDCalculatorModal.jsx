@@ -66,7 +66,7 @@ const EDDCalculatorModal = ({onClose}) => {
             {/* Floating calendar button */}
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 right-20 bg-[--primary] text-white p-4 rounded-full shadow-lg hover:bg-[--primary]/90 z-50"
+                className="fixed bottom-6 right-20 bg-blue-60 text-white p-4 rounded-full shadow-lg hover:bg-blue-50"
                 aria-label="Open EDD Calculator"
             >
                 <Calendar size={24} />
