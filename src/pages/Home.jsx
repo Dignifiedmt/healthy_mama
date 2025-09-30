@@ -69,7 +69,7 @@ const Home = () => {
     return (
         <div>
             <SearchBar value={search} onChange={(e) => setSearch(e.target.value)} />
-            <section className="my-8 text-center">
+            <section className="my-8 text-center bg-white shadow-md p-4 rounded">
                 <h1 className="text-4xl font-bold mb-4">Lafiyar Mata Mai Juna Biyu da Yara</h1>
                 <p className="text-lg mb-4">Samun ingantacciyar lafiya ga uwa da ɗanta shine babban burinmu.</p>
                 <button className="bg-blue-600 text-white px-6 py-2 rounded">Fara Yanzu</button>
@@ -79,7 +79,7 @@ const Home = () => {
                 <p className="text-center">{tips[currentTipIndex]}</p>
             </section>
             <section className="my-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                <div>
+                <div className="bg-white shadow-md p-4 rounded">
                     <Target size={48} className="mx-auto mb-4 text-blue-600" />
                     <h3 className="text-xl font-bold">Manufarmu</h3>
                     <p>
@@ -87,14 +87,14 @@ const Home = () => {
                         da ake samu.
                     </p>
                 </div>
-                <div>
+                <div className="bg-white shadow-md p-4 rounded">
                     <Eye size={48} className="mx-auto mb-4 text-blue-600" />
                     <h3 className="text-xl font-bold">Burinmu</h3>
                     <p>
                         Ganin an samu al'umma mai cikakkiyar lafiya inda kowace uwa da yaro ke samun kulawar da ta dace.
                     </p>
                 </div>
-                <div>
+                <div className="bg-white shadow-md p-4 rounded">
                     <Heart size={48} className="mx-auto mb-4 text-blue-600" />
                     <h3 className="text-xl font-bold">Tasirinmu</h3>
                     <p>
@@ -112,9 +112,12 @@ const Home = () => {
                 </div>
             </section>
             <section className="my-8 flex items-center justify-between">
-                <h2 className="text-3xl font-bold">Nemi Rubuta Labari</h2>
+                <h2 className="text-3xl font-bold text-center">Nemi Rubuta Labari</h2>
                 <div>
-                    <button className="bg-blue-600 text-white px-4 py-2 rounded mr-2" onClick={() => setShowForm(true)}>
+                    <button
+                        className="bg-blue-600 text-white text-center px-4 py-2 rounded mr-2"
+                        onClick={() => setShowForm(true)}
+                    >
                         Add Article
                     </button>
                     {showForm && (
