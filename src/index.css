@@ -1,0 +1,67 @@
+/* Tailwind CSS v4.1 import (no config needed) */
+@import "tailwindcss";
+
+/* Custom variables based on hindex.html, hcontact.html, hblogform.html */
+:where(:root) {
+    --primary: #2563eb; /* Blue for buttons/links */
+    --secondary: #1f2937; /* Footer bg */
+    --background: #f9fafb; /* Light bg */
+    --text: #1f2937; /* Default text */
+}
+
+/* Global styles */
+:where(html) {
+    font-family: Arial, sans-serif; /* Matches hindex.html */
+    background-color: var(--background);
+    color: var(--text);
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* Container styles (matches hindex.html layout) */
+.container {
+    margin-inline: auto;
+    padding-inline: 1rem; /* px-4 */
+    max-width: 80rem; /* max-w-7xl */
+}
+
+/* Links (matches blue links in HTML) */
+a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+}
+a:hover {
+    text-decoration-color: var(--primary);
+}
+
+/* Buttons (matches hblogform.html Publish Post) */
+button {
+    transition: color 200ms, background-color 200ms;
+}
+
+/* Prose for markdown (matches harticlepage(1).html) */
+.prose {
+    line-height: 1.75;
+    color: var(--text);
+}
+.prose h1 {
+    font-size: 1.875rem; /* text-3xl */
+    font-weight: 700; /* font-bold */
+    margin-bottom: 1rem; /* mb-4 */
+}
+.prose h2 {
+    font-size: 1.5rem; /* text-2xl */
+    font-weight: 600; /* font-semibold */
+    margin-bottom: 0.75rem; /* mb-3 */
+}
+.prose p {
+    margin-bottom: 1rem; /* mb-4 */
+}
+
+/* Responsive: Mobile padding (matches hindex.html mobile nav) */
+@media (max-width: 640px) {
+    .container {
+        padding-inline: 0.5rem; /* px-2 */
+    }
+}
