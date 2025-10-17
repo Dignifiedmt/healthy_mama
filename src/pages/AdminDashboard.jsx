@@ -1,12 +1,11 @@
 import {useState, useEffect} from "react";
-import {getRequests, approveRequest, deleteRequest, addArticle, uploadImage} from "../services/supabase";
-import SimpleMDE from "react-simplemde-editor";
-import "easymde/dist/easymde.min.css";
+import {getRequests, approveRequest, deleteRequest, addArticle, uploadImage, updateArticle} from "../services/supabase";
+import ArticleForm from "../components/ArticleForm";
 
 const AdminDashboard = () => {
     const [requests, setRequests] = useState([]);
-    const [form, setForm] = useState({title: "", excerpt: "", content: "", image: null});
     const [showAddForm, setShowAddForm] = useState(false);
+    const [editingArticle, setEditingArticle] = useState(null);
 
     useEffect(() => {
         async function fetchRequests() {
@@ -44,27 +43,46 @@ const AdminDashboard = () => {
         }
     };
 
-    const handleAddArticle = async (e) => {
-        e.preventDefault();
+    const handleAddArticle = async (formData) => {
         try {
             let imagePath = "";
-            if (form.image) {
-                imagePath = await uploadImage(form.image);
+            if (formData.image) {
+                imagePath = await uploadImage(formData.image);
             }
             await addArticle({
-                title: form.title,
-                slug: form.title.toLowerCase().replace(/\s+/g, "-"),
-                excerpt: form.excerpt,
-                content: form.content,
+                title: formData.title,
+                slug: formData.title.toLowerCase().replace(/\s+/g, "-"),
+                excerpt: formData.excerpt,
+                content: formData.content,
                 image_path: imagePath,
-                author: "Admin", // Replace with actual admin user if available
+                author: "Admin",
             });
             alert("Article added!");
-            setForm({title: "", excerpt: "", content: "", image: null});
             setShowAddForm(false);
         } catch (err) {
             console.error("Failed to add article:", err);
             alert("Error adding article. Please try again.");
+        }
+    };
+
+    const handleEditArticle = async (formData) => {
+        try {
+            let imagePath = editingArticle.image_path;
+            if (formData.image) {
+                imagePath = await uploadImage(formData.image);
+            }
+            await updateArticle(editingArticle.id, {
+                title: formData.title,
+                slug: formData.title.toLowerCase().replace(/\s+/g, "-"),
+                excerpt: formData.excerpt,
+                content: formData.content,
+                image_path: imagePath,
+            });
+            alert("Article updated!");
+            setEditingArticle(null);
+        } catch (err) {
+            console.error("Failed to update article:", err);
+            alert("Error updating article. Please try again.");
         }
     };
 
@@ -74,85 +92,34 @@ const AdminDashboard = () => {
                 <h1 className="text-2xl font-bold">Admin Dashboard</h1>
                 <div>
                     <button
-                        className="bg-blue-600 text-white px-4 py-2 rounded mr-2"
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
                         onClick={() => setShowAddForm(true)}
                     >
                         Add Article
                     </button>
-                    {showAddForm && (
-                        <button
-                            className="bg-gray-300 text-gray-800 px-4 py-2 rounded"
-                            onClick={() => setShowAddForm(false)}
-                        >
-                            Close
-                        </button>
-                    )}
                 </div>
             </div>
 
             {showAddForm && (
                 <section className="bg-white p-6 rounded shadow-md mb-6">
                     <h2 className="text-2xl font-bold mb-4">Add New Article</h2>
-                    <form onSubmit={handleAddArticle} className="bg-white p-6 rounded shadow-md">
-                        <input
-                            type="text"
-                            placeholder="Title"
-                            value={form.title}
-                            onChange={(e) => setForm({...form, title: e.target.value})}
-                            required
-                            className="block mb-4 p-2 border w-full rounded"
-                        />
-                        <textarea
-                            placeholder="Excerpt"
-                            value={form.excerpt}
-                            onChange={(e) => setForm({...form, excerpt: e.target.value})}
-                            required
-                            className="block mb-4 p-2 border w-full rounded"
-                        />
-                        <div className="mb-4">
-                            <label className="block mb-2">Content (Markdown supported)</label>
-                            <SimpleMDE
-                                value={form.content}
-                                onChange={(value) => setForm({...form, content: value})}
-                                options={{
-                                    autofocus: true,
-                                    spellChecker: false,
-                                    toolbar: [
-                                        "bold",
-                                        "italic",
-                                        "heading",
-                                        "|",
-                                        "quote",
-                                        "unordered-list",
-                                        "ordered-list",
-                                        "|",
-                                        "link",
-                                        "image",
-                                        "|",
-                                        "preview",
-                                        "side-by-side",
-                                        "fullscreen",
-                                        "|",
-                                        "guide",
-                                    ],
-                                }}
-                            />
-                        </div>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => setForm({...form, image: e.target.files[0]})}
-                            className="block mb-4"
-                        />
-                        <div className="flex justify-end">
-                            <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded mr-2">
-                                Save
-                            </button>
-                            <button className="bg-gray-200 px-4 py-2 rounded" onClick={() => setShowAddForm(false)}>
-                                Close
-                            </button>
-                        </div>
-                    </form>
+                    <ArticleForm
+                        onSubmit={handleAddArticle}
+                        onCancel={() => setShowAddForm(false)}
+                        submitButtonText="Save Article"
+                    />
+                </section>
+            )}
+
+            {editingArticle && (
+                <section className="bg-white p-6 rounded shadow-md mb-6">
+                    <h2 className="text-2xl font-bold mb-4">Edit Article</h2>
+                    <ArticleForm
+                        onSubmit={handleEditArticle}
+                        onCancel={() => setEditingArticle(null)}
+                        initialData={editingArticle}
+                        submitButtonText="Update Article"
+                    />
                 </section>
             )}
 
@@ -163,23 +130,26 @@ const AdminDashboard = () => {
                         requests.map((request) => (
                             <div key={request.id} className="bg-white p-4 rounded shadow-md">
                                 <h3 className="text-xl font-semibold">{request.title}</h3>
-                                <p>{request.excerpt || "No excerpt available"}</p>
-                                <button
-                                    onClick={() => handleApprove(request)}
-                                    className="bg-green-600 text-white px-4 py-2 rounded mr-2"
-                                >
-                                    Approve
-                                </button>
-                                <button
-                                    onClick={() => handleDelete(request.id)}
-                                    className="bg-red-600 text-white px-4 py-2 rounded"
-                                >
-                                    Delete
-                                </button>
+                                <p className="text-gray-600 mb-2">{request.excerpt || "No excerpt available"}</p>
+                                <p className="text-sm text-gray-500">Submitted by: {request.submitter_email}</p>
+                                <div className="mt-3 flex space-x-2">
+                                    <button
+                                        onClick={() => handleApprove(request)}
+                                        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                                    >
+                                        Approve
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(request.id)}
+                                        className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
                             </div>
                         ))
                     ) : (
-                        <p className="text-center">No pending requests.</p>
+                        <p className="text-center text-gray-500">No pending requests.</p>
                     )}
                 </div>
             </section>
