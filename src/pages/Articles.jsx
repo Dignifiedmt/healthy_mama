@@ -1,68 +1,3 @@
-// import {useState, useEffect} from "react";
-// import {getArticles, deleteArticle} from "../services/supabase";
-// import ArticleCard from "../components/ArticleCard";
-// import SearchBar from "../components/SearchBar";
-// import {useAuth} from "../contexts/AuthContext";
-
-// const Articles = () => {
-//     const [articles, setArticles] = useState([]);
-//     const [search, setSearch] = useState("");
-//     const {isAdmin} = useAuth();
-
-//     useEffect(() => {
-//         async function fetchData() {
-//             try {
-//                 const data = await getArticles();
-//                 setArticles(data || []);
-//             } catch (err) {
-//                 console.error("Failed to fetch articles:", err);
-//                 alert("Error loading articles. Please try again.");
-//                 setArticles([]);
-//             }
-//         }
-//         fetchData();
-//     }, []);
-
-//     const handleDelete = async (id) => {
-//         if (window.confirm("Delete?")) {
-//             try {
-//                 await deleteArticle(id);
-//                 setArticles((prev = []) => prev.filter((a) => a.id !== id));
-//             } catch (err) {
-//                 console.error("Failed to delete article:", err);
-//                 alert("Error deleting article.");
-//             }
-//         }
-//     };
-
-//     const filteredArticles = (articles || []).filter((a) =>
-//         (a.title || "").toLowerCase().includes((search || "").toLowerCase())
-//     );
-
-//     return (
-//         <div>
-//             <h1 className="text-3xl font-bold mb-4">Labarai</h1>
-//             <SearchBar value={search} onChange={(e) => setSearch(e.target.value)} />
-//             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-//                 {filteredArticles.length > 0 ? (
-//                     filteredArticles.map((article) => (
-//                         <ArticleCard
-//                             key={article.id}
-//                             article={article}
-//                             onEdit={isAdmin ? () => alert("Edit form TODO") : undefined}
-//                             onDelete={isAdmin ? () => handleDelete(article.id) : undefined}
-//                         />
-//                     ))
-//                 ) : (
-//                     <p className="text-center">No articles found. Try a different search or check back later.</p>
-//                 )}
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default Articles;
-
 import {useState, useEffect} from "react";
 import {getArticles, deleteArticle, updateArticle, uploadImage} from "../services/supabase";
 import ArticleCard from "../components/ArticleCard";
@@ -114,6 +49,7 @@ const Articles = () => {
                 excerpt: formData.excerpt,
                 content: formData.content,
                 image_path: imagePath,
+                author: formData.author || editingArticle.author,
             });
             alert("Article updated!");
 
@@ -132,13 +68,28 @@ const Articles = () => {
     );
 
     return (
-        <div>
-            <h1 className="text-3xl font-bold mb-4">Labarai</h1>
-            <SearchBar value={search} onChange={(e) => setSearch(e.target.value)} />
+        <div className="container mx-auto px-4 py-8">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                <div>
+                    <h1 className="text-4xl font-bold text-gray-800 mb-2">Labarai</h1>
+                    <p className="text-gray-600">Discover insightful articles on health and wellness</p>
+                </div>
+                <div className="mt-4 md:mt-0 w-full md:w-auto">
+                    <SearchBar value={search} onChange={(e) => setSearch(e.target.value)} />
+                </div>
+            </div>
 
             {editingArticle && (
-                <section className="my-6 bg-white p-6 rounded shadow-md">
-                    <h2 className="text-2xl font-bold mb-4">Edit Article</h2>
+                <section className="my-8 bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-2xl font-bold text-gray-800">Edit Article</h2>
+                        <button
+                            onClick={() => setEditingArticle(null)}
+                            className="text-gray-500 hover:text-gray-700 text-lg"
+                        >
+                            ✕
+                        </button>
+                    </div>
                     <ArticleForm
                         onSubmit={handleEdit}
                         onCancel={() => setEditingArticle(null)}
@@ -148,7 +99,7 @@ const Articles = () => {
                 </section>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
                 {filteredArticles.length > 0 ? (
                     filteredArticles.map((article) => (
                         <ArticleCard
@@ -159,9 +110,13 @@ const Articles = () => {
                         />
                     ))
                 ) : (
-                    <p className="text-center col-span-3 text-gray-500">
-                        No articles found. Try a different search or check back later.
-                    </p>
+                    <div className="col-span-3 text-center py-12">
+                        <div className="text-gray-400 text-6xl mb-4">📝</div>
+                        <p className="text-gray-500 text-lg mb-2">No articles found</p>
+                        <p className="text-gray-400">
+                            Try a different search term or check back later for new content.
+                        </p>
+                    </div>
                 )}
             </div>
         </div>
