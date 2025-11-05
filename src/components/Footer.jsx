@@ -28,7 +28,7 @@ const Footer = () => {
                     <h4 className="font-bold">Shiga Shafin Wasikunmu</h4>
                     <p>Karɓi sabbin labarai da shawarwari kai tsaye a cikin akwatin saƙo naka.</p>
                     <input type="email" placeholder="Imel" className="w-full p-2 mt-2 text-black rounded" />
-                    <button className="bg-blue-600 p-2 mt-2 rounded w-full">Aika</button>
+                    <button className="bg-blue-800 p-2 mt-2 rounded w-full">Aika</button>
                 </div>
                 <div>
                     <h4 className="font-bold">Tuntuɓi Mu</h4>

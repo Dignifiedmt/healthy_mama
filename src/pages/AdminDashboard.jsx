@@ -92,7 +92,7 @@ const AdminDashboard = () => {
                 <h1 className="text-2xl font-bold">Admin Dashboard</h1>
                 <div>
                     <button
-                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                        className="bg-blue-800 text-white px-4 py-2 rounded hover:bg-blue-800"
                         onClick={() => setShowAddForm(true)}
                     >
                         Add Article
@@ -130,18 +130,18 @@ const AdminDashboard = () => {
                         requests.map((request) => (
                             <div key={request.id} className="bg-white p-4 rounded shadow-md">
                                 <h3 className="text-xl font-semibold">{request.title}</h3>
-                                <p className="text-gray-600 mb-2">{request.excerpt || "No excerpt available"}</p>
+                                <p className="text-gray-800 mb-2">{request.excerpt || "No excerpt available"}</p>
                                 <p className="text-sm text-gray-500">Submitted by: {request.submitter_email}</p>
                                 <div className="mt-3 flex space-x-2">
                                     <button
                                         onClick={() => handleApprove(request)}
-                                        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                                        className="bg-green-800 text-white px-4 py-2 rounded hover:bg-green-800"
                                     >
                                         Approve
                                     </button>
                                     <button
                                         onClick={() => handleDelete(request.id)}
-                                        className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                                        className="bg-red-800 text-white px-4 py-2 rounded hover:bg-red-800"
                                     >
                                         Delete
                                     </button>

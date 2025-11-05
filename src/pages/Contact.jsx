@@ -46,7 +46,7 @@ const Contact = () => {
                             className="w-full p-2 border rounded h-32"
                         />
                     </div>
-                    <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded">
+                    <button type="submit" className="bg-blue-800 text-white px-6 py-2 rounded">
                         Aika Saƙo
                     </button>
                 </form>

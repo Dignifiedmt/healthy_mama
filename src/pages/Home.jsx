@@ -88,7 +88,7 @@ const Home = () => {
                 content: formData.content,
                 image_path: imagePath,
                 status: "pending",
-                submitter_email: formData.email, // FIX: use formData.email (was using outer form state)
+                submitter_email: formData.email,
             });
             alert("Request submitted! Awaiting admin approval.");
             setForm({title: "", excerpt: "", content: "", image: null, email: ""});
@@ -113,12 +113,13 @@ const Home = () => {
                     className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
                     style={{backgroundImage: `url(${heroImages[currentHeroIndex]})`}}
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-center items-center">
-                    <h1 className="text-4xl font-bold mb-4 text-white">Lafiyar Mata Mai Juna Biyu da Yara</h1>
-                    <p className="text-lg mb-4 text-white">
+
+                <div className="absolute inset-0 bg-opacity-10 flex flex-col justify-center items-center">
+                    <h1 className="text-4xl font-bold mb-4 text-blue-800">Lafiyar Mata Mai Juna Biyu da Yara</h1>
+                    <p className="text-lg mb-4 text-blue-800 text-shadow-white-1px">
                         Samun ingantacciyar lafiya ga uwa da ɗanta shine babban burinmu.
                     </p>
-                    <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Fara Yanzu</button>
+                    <button className="bg-blue-800 text-white px-6 py-2 rounded hover:bg-blue-800">Fara Yanzu</button>
                 </div>
 
                 {/* Carousel Indicators */}
@@ -142,10 +143,9 @@ const Home = () => {
                 <p className="text-center">{tips[currentTipIndex]}</p>
             </section>
 
-            {/* Rest of the existing sections remain the same */}
             <section className="my-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
                 <div className="bg-white shadow-md p-4 rounded">
-                    <Target size={48} className="mx-auto mb-4 text-blue-600" />
+                    <Target size={48} className="mx-auto mb-4 text-blue-800" />
                     <h3 className="text-xl font-bold">Manufarmu</h3>
                     <p>
                         Wayar da kan al'umma game da mahimmancin lafiyar mata masu juna biyu da yara don rage mace-macen
@@ -153,14 +153,14 @@ const Home = () => {
                     </p>
                 </div>
                 <div className="bg-white shadow-md p-4 rounded">
-                    <Eye size={48} className="mx-auto mb-4 text-blue-600" />
+                    <Eye size={48} className="mx-auto mb-4 text-blue-800" />
                     <h3 className="text-xl font-bold">Burinmu</h3>
                     <p>
                         Ganin an samu al'umma mai cikakkiyar lafiya inda kowace uwa da yaro ke samun kulawar da ta dace.
                     </p>
                 </div>
                 <div className="bg-white shadow-md p-4 rounded">
-                    <Heart size={48} className="mx-auto mb-4 text-blue-600" />
+                    <Heart size={48} className="mx-auto mb-4 text-blue-800" />
                     <h3 className="text-xl font-bold">Tasirinmu</h3>
                     <p>
                         Mun kai ga dubban mata da bayanai masu amfani waɗanda suka taimaka wajen inganta lafiyarsu da ta
@@ -184,7 +184,7 @@ const Home = () => {
                 <h2 className="text-3xl font-bold">Nemi Rubuta Labari</h2>
                 <div>
                     <button
-                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                        className="bg-blue-800 text-white px-4 py-2 rounded hover:bg-blue-800"
                         onClick={() => setShowForm(true)}
                     >
                         Add Article

@@ -38,7 +38,7 @@ const Login = () => {
                     required
                     className="block mb-2 p-2 border w-full"
                 />
-                <button type="submit" className="bg-blue-600 text-white p-2 rounded w-full">
+                <button type="submit" className="bg-blue-800 text-white p-2 rounded w-full">
                     Login
                 </button>
             </form>

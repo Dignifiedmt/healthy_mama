@@ -5,7 +5,7 @@ const Modal = ({isOpen, onClose, children}) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-6 rounded shadow-lg">
                 {children}
-                <button onClick={onClose} className="mt-4 text-red-600">
+                <button onClick={onClose} className="mt-4 text-red-800">
                     Close
                 </button>
             </div>

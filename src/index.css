@@ -47,12 +47,12 @@ button {
 }
 .prose h1 {
     font-size: 1.875rem; /* text-3xl */
-    font-weight: 700; /* font-bold */
+    font-weight: 800; /* font-bold */
     margin-bottom: 1rem; /* mb-4 */
 }
 .prose h2 {
     font-size: 1.5rem; /* text-2xl */
-    font-weight: 600; /* font-semibold */
+    font-weight: 800; /* font-semibold */
     margin-bottom: 0.75rem; /* mb-3 */
 }
 .prose p {

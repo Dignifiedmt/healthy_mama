@@ -9,9 +9,9 @@ const ArticleCard = ({article, onEdit, onDelete}) => {
             )}
             <div className="p-4">
                 <h3 className="text-xl font-semibold mb-2 line-clamp-2">{article.title}</h3>
-                <p className="text-gray-600 mb-3 line-clamp-3">{article.excerpt}</p>
+                <p className="text-gray-800 mb-3 line-clamp-3">{article.excerpt}</p>
                 <div className="flex justify-between items-center">
-                    <Link to={`/articles/${article.slug}`} className="text-blue-600 hover:text-blue-800 font-medium">
+                    <Link to={`/articles/${article.slug}`} className="text-blue-800 hover:text-blue-800 font-medium">
                         Karanta Ƙari →
                     </Link>
 
@@ -20,7 +20,7 @@ const ArticleCard = ({article, onEdit, onDelete}) => {
                             {onEdit && (
                                 <button
                                     onClick={onEdit}
-                                    className="text-blue-600 hover:text-blue-800 p-1"
+                                    className="text-blue-800 hover:text-blue-800 p-1"
                                     title="Edit article"
                                 >
                                     <Edit2 size={16} />
@@ -29,7 +29,7 @@ const ArticleCard = ({article, onEdit, onDelete}) => {
                             {onDelete && (
                                 <button
                                     onClick={onDelete}
-                                    className="text-red-600 hover:text-red-800 p-1"
+                                    className="text-red-800 hover:text-red-800 p-1"
                                     title="Delete article"
                                 >
                                     <Trash2 size={16} />

@@ -10,7 +10,7 @@ const EDDCalculatorModal = ({onClose}) => {
     const calculateEDD = (e) => {
         if (e && e.preventDefault) e.preventDefault();
         if (!inputDate) {
-            alert("Please select a date.");
+            alert("Zabi Rana.");
             return;
         }
 
@@ -66,7 +66,7 @@ const EDDCalculatorModal = ({onClose}) => {
             {/* Floating calendar button */}
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 right-20 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-[--primary]/90 z-50"
+                className="fixed bottom-6 right-20 bg-blue-800 text-white p-4 rounded-full shadow-lg hover:bg-[--primary]/90 z-50"
                 aria-label="Open EDD Calculator"
             >
                 <Calendar size={24} />
@@ -75,10 +75,12 @@ const EDDCalculatorModal = ({onClose}) => {
             {isOpen && (
                 <div className="fixed bottom-24 right-6 w-96 max-h-[80vh] bg-white shadow-xl rounded-lg flex flex-col z-50 border border-gray-200 overflow-auto">
                     <div className="flex justify-between items-center p-4 border-b bg-gray-50 rounded-t-lg">
-                        <h3 className="font-bold text-lg">Expected Delivery Date Calculator</h3>
+                        <h3 className="font-bold text-lg">
+                            Expected Delivery Date Calculator (Kalkulaton Kirga Ranar Da za'a Haihu)
+                        </h3>
                         <button
                             onClick={handleClose}
-                            className="text-gray-500 hover:text-gray-700"
+                            className="text-gray-500 hover:text-gray-800"
                             aria-label="Close EDD Calculator"
                         >
                             <X size={20} />
@@ -86,7 +88,7 @@ const EDDCalculatorModal = ({onClose}) => {
                     </div>
 
                     <div className="p-4 space-y-4">
-                        <div className="mb-0 rounded-lg border border-[--accent] bg-[--accent]/30 p-3 dark:border-yellow-700/50 dark:bg-[--accent]/10">
+                        <div className="mb-0 rounded-lg border border-[--accent] bg-[--accent]/30 p-3 dark:border-yellow-800/50 dark:bg-[--accent]/10">
                             <div className="flex">
                                 <div className="flex-shrink-0">
                                     <svg
@@ -105,11 +107,11 @@ const EDDCalculatorModal = ({onClose}) => {
                                 </div>
                                 <div className="ml-3">
                                     <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-300">
-                                        Disclaimer
+                                        Disclaimer (Ikrari)
                                     </h3>
-                                    <p className="mt-1 text-sm text-yellow-700 dark:text-yellow-200">
-                                        The dates provided are estimates. Consult a healthcare professional for accurate
-                                        medical advice.
+                                    <p className="mt-1 text-sm text-yellow-800 dark:text-yellow-200">
+                                        Ranar da wannan Kalkulator yake badawa kintace ne ne kawai ka Je gurin Likita ko
+                                        Kwararren Ma'aikacin lafiya domin samun ingataccen bayani da kuma shawarwari.
                                     </p>
                                 </div>
                             </div>
@@ -128,11 +130,9 @@ const EDDCalculatorModal = ({onClose}) => {
                                     name="date-type"
                                     value={dateType}
                                     onChange={(e) => setDateType(e.target.value)}
-                                    className="mt-1 block w-full rounded-lg border-gray-300 bg-gray-50 py-2 pl-3 pr-10 text-sm text-[--text] focus:border-[--primary] focus:outline-none focus:ring-[--primary] dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                    className="mt-1 block w-full rounded-lg border-gray-300 bg-gray-50 py-2 pl-3 pr-10 text-sm text-[--text] focus:border-[--primary] focus:outline-none focus:ring-[--primary] dark:border-gray-800 dark:bg-gray-800 dark:text-white"
                                 >
-                                    <option>Last Menstrual Period</option>
-                                    <option>Conception Date</option>
-                                    <option>Known Due Date</option>
+                                    <option>Ranar Da Aka yi Jinin Al'ada na Karshe</option>
                                 </select>
                             </div>
 
@@ -141,7 +141,7 @@ const EDDCalculatorModal = ({onClose}) => {
                                     htmlFor="date"
                                     className="block text-sm font-medium text-[--text] dark:text-gray-300"
                                 >
-                                    Date
+                                    Kwanan Wata
                                 </label>
                                 <input
                                     id="date"
@@ -149,16 +149,16 @@ const EDDCalculatorModal = ({onClose}) => {
                                     type="date"
                                     value={inputDate}
                                     onChange={(e) => setInputDate(e.target.value)}
-                                    className="mt-1 block w-full rounded-lg border-gray-300 bg-gray-50 py-2 px-3 text-sm text-[--text] focus:border-[--primary] focus:outline-none focus:ring-[--primary] dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                    className="mt-1 block w-full rounded-lg border-gray-300 bg-gray-50 py-2 px-3 text-sm text-[--text] focus:border-[--primary] focus:outline-none focus:ring-[--primary] dark:border-gray-800 dark:bg-gray-800 dark:text-white"
                                 />
                             </div>
 
                             <div className="flex justify-center">
                                 <button
                                     type="submit"
-                                    className="w-full rounded-lg bg-[--primary] px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-[--primary]/80 focus:outline-none focus:ring-2 focus:ring-[--primary] focus:ring-offset-2 sm:w-auto"
+                                    className="w-full rounded-lg bg-blue-800 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-[--primary]/80 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:ring-offset-2 sm:w-auto"
                                 >
-                                    Calculate
+                                    Lissafa
                                 </button>
                             </div>
                         </form>
@@ -166,7 +166,7 @@ const EDDCalculatorModal = ({onClose}) => {
                         {result && (
                             <div className="mt-2">
                                 <h3 className="text-md font-medium text-[--text] dark:text-white text-center">
-                                    Your estimated delivery date is:
+                                    Kwanan watan Ranar Da zaki Haihu Shine:
                                 </h3>
                                 <p className="mt-2 text-2xl font-extrabold text-[--primary] text-center">
                                     {result.edd}
@@ -176,17 +176,17 @@ const EDDCalculatorModal = ({onClose}) => {
                                     <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
                                         <div className="text-center">
                                             <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                                Earliest Date
+                                                Zaki iya Haihuwa Daga Ranar
                                             </p>
                                             <p className="mt-1 text-lg font-bold text-[--text] dark:text-white">
                                                 {result.earliest}
                                             </p>
                                         </div>
-                                        <div className="h-10 w-px bg-gray-200 dark:bg-gray-700/50 hidden sm:block" />
-                                        <div className="w-full h-px bg-gray-200 dark:bg-gray-700/50 sm:hidden" />
+                                        <div className="h-10 w-px bg-gray-200 dark:bg-gray-800/50 hidden sm:block" />
+                                        <div className="w-full h-px bg-gray-200 dark:bg-gray-800/50 sm:hidden" />
                                         <div className="text-center">
                                             <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                                Latest Date
+                                                Har zuwa Ranar
                                             </p>
                                             <p className="mt-1 text-lg font-bold text-[--text] dark:text-white">
                                                 {result.latest}
@@ -194,7 +194,7 @@ const EDDCalculatorModal = ({onClose}) => {
                                         </div>
                                     </div>
 
-                                    <div className="mt-4 border-t border-gray-200 pt-3 dark:border-gray-700/50">
+                                    <div className="mt-4 border-t border-gray-200 pt-3 dark:border-gray-800/50">
                                         <div className="flex items-start gap-3">
                                             <div className="size-6 shrink-0 text-[--primary]">
                                                 <svg
@@ -214,12 +214,12 @@ const EDDCalculatorModal = ({onClose}) => {
                                             </div>
                                             <div>
                                                 <h4 className="text-sm font-semibold text-[--text] dark:text-white">
-                                                    Obstetrician's Note
+                                                    Bayanin Ma'aikatan Lafiya (Obstetrician's Note)
                                                 </h4>
                                                 <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                                    Your due date is an estimate. It's normal for pregnancy to last
-                                                    between 38 and 42 weeks, so your baby could arrive two weeks before
-                                                    or after your expected delivery date.
+                                                    Ranar da mace zata haihuwa kintace ne kawai. Amma Juna biyu yana iya
+                                                    yin sati 38 har zuwa 42. Saboda haka zaki iya Haihuwar danki sati 2
+                                                    kafin ko bayan Ranar da Kalkuleton ya Lissafa.
                                                 </p>
                                             </div>
                                         </div>

@@ -40,7 +40,7 @@ const ChatbotModal = () => {
         <>
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 z-50"
+                className="fixed bottom-6 right-6 bg-blue-800 text-white p-4 rounded-full shadow-lg hover:bg-blue-800 z-50"
                 aria-label="Open Chatbot"
             >
                 <MessageCircle size={24} />
@@ -53,7 +53,7 @@ const ChatbotModal = () => {
                         <h3 className="font-bold text-lg">Healthy Mama Bot</h3>
                         <button
                             onClick={() => setIsOpen(false)}
-                            className="text-gray-500 hover:text-gray-700"
+                            className="text-gray-500 hover:text-gray-800"
                             aria-label="Close Chatbot"
                         >
                             <X size={20} />
@@ -64,7 +64,7 @@ const ChatbotModal = () => {
                             <div key={i} className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"}`}>
                                 <div
                                     className={`max-w-xs px-3 py-2 rounded-lg ${
-                                        msg.from === "user" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-800"
+                                        msg.from === "user" ? "bg-blue-800 text-white" : "bg-gray-200 text-gray-800"
                                     }`}
                                 >
                                     {/* Render bot messages as markdown */}
@@ -85,7 +85,7 @@ const ChatbotModal = () => {
                         <button
                             onClick={handleSend}
                             disabled={!input.trim()}
-                            className="bg-blue-600 text-white p-2 rounded-lg disabled:opacity-50"
+                            className="bg-blue-800 text-white p-2 rounded-lg disabled:opacity-50"
                         >
                             <Send size={18} />
                         </button>
